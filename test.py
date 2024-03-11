@@ -21,8 +21,9 @@ y_rk = [y0]
 y = y0
 x = x0
 
+table = read_butcher_tableau()
 while x <= x_end:
-    x, y = rk_one_step(x, y, dx, f)
+    x, y = rk_one_step(x, y, dx, f, table)
     x_rk.append(x)
     y_rk.append(y)
 

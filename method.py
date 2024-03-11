@@ -31,10 +31,7 @@ def read_butcher_tableau() -> dict:
     return table
 
 
-tableau = read_butcher_tableau()
-
-
-def get_k_coefficients(t: float, y: float, h: float, f: Callable[[float, float], float]) \
+def get_k_coefficients(t: float, y: float, h: float, f: Callable[[float, float], float], tableau: dict) \
         -> list[float]:
     a_ = tableau['a_']
     c_ = tableau['c_']
@@ -45,15 +42,13 @@ def get_k_coefficients(t: float, y: float, h: float, f: Callable[[float, float],
         for j in range(len(a_[0])):
             if not math.fabs(a_[i][j] - 0) < 1e-10:
                 y_n += h * a_[i][j] * k[j - 1]
-        t_n += c_[i] * h
-        k.append(f(t_n, y_n))
-        t_n = t
+        k.append(f(t_n + c_[i] * h, y_n))
         y_n = y
     return k
 
 
-def rk_one_step(t: float, y: float, h: float, f: Callable[[float, float], float]) -> tuple[float, float]:
-    k = get_k_coefficients(t, y, h, f)
+def rk_one_step(t: float, y: float, h: float, f: Callable[[float, float], float], tableau: dict) -> tuple[float, float]:
+    k = get_k_coefficients(t, y, h, f, tableau)
     y_n = y
     b_ = tableau['b_']
     for i in range(len(b_)):
