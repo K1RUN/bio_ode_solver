@@ -1,62 +1,35 @@
-import matplotlib.pyplot as plt
 from method import *
-import numpy as np
+import matplotlib.pyplot as plt
 
 
-def f(x, y):
-    return x**2
+def lotka_volterra(_, x):
+    alpha = 1.1
+    beta = 0.4
+    gamma = 0.4
+    delta = 0.1
 
+    xdot = np.array([alpha * x[0] - beta * x[0] * x[1], delta * x[0] * x[1] - gamma * x[1]])
 
-def y1(x):
-    return x**3/3. + 2/3.
+    return xdot
 
-
-x0 = 1.
-y0 = 1.
-dx = 25
-x_end = 500
-
-x_rk = [x0]
-y_rk = [y0]
-y = y0
-x = x0
 
 table = read_butcher_tableau()
-while x <= x_end:
-    x, y = rk_one_step(x, y, dx, f, table)
-    x_rk.append(x)
-    y_rk.append(y)
 
+# SOLUTION
+x0 = np.array([20, 5], dtype=float)
+t, y = rk(0, 70, x0, 0.01, lotka_volterra, table)
 
-def Euler(x, y, dx, dydx):
-    return x + dx, y + dx * dydx(x, y)
+plt.subplot(1, 2, 1)
+plt.plot(t, y[0, :], "r", label="Preys")
+plt.plot(t, y[1, :], "b", label="Predators")
+plt.xlabel("Time (t)")
+plt.grid()
+plt.legend()
 
+plt.subplot(1, 2, 2)
+plt.plot(y[0, :], y[1, :])
+plt.xlabel("Preys")
+plt.ylabel("Predators")
+plt.grid()
 
-x_eu = [x0]
-y_eu = [y0]
-
-y = y0
-x = x0
-
-while x <= x_end:
-    x, y = Euler(x, y, dx, f)
-
-    x_eu.append(x)
-    y_eu.append(y)
-
-
-plt.figure(figsize=(7,5))
-
-plt.plot(np.linspace(1,500,500), y1(np.linspace(1,500,500)),
-         label="Analytical solution",color="red", lw=2)
-
-plt.plot(x_rk, y_rk, label="Numerical solution:\nRunge-Kutta", dashes=(3,2), color="blue",
-        lw=3)
-plt.plot(x_eu, y_eu, label="Numerical solution:\nEuler", dashes=(3,2), color="green",
-        lw=3)
-
-plt.legend(loc="best", fontsize=12)
-plt.title(r"Solution to ODE: $\quad\frac{dy}{dx}=x^2$")
-plt.xlabel("x", fontsize=12)
-plt.ylabel("y", fontsize=12)
 plt.show()
