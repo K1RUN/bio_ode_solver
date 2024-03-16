@@ -1,24 +1,26 @@
-from method import *
 import numpy as np
 import matplotlib.pyplot as plt
 
+from bio_ode_solver.src.method.rk import rk
+from bio_ode_solver.src.utils.parse_tableau import parse_butcher_tableau
 
-def lotka_volterra(_, x):
+
+def lotka_volterra(_, N):
     alpha = 1.1
     beta = 0.4
     gamma = 0.4
     delta = 0.1
 
-    xdot = np.array([alpha * x[0] - beta * x[0] * x[1], delta * x[0] * x[1] - gamma * x[1]])
+    xdot = np.array([alpha * N[0] - beta * N[0] * N[1], delta * N[0] * N[1] - gamma * N[1]])
 
     return xdot
 
 
-table = read_butcher_tableau()
+table = parse_butcher_tableau()
 
 # SOLUTION
-x0 = np.array([20, 5], dtype=float)
-t, y = rk(0, 70, x0, 0.01, lotka_volterra, table)
+y0 = np.array([20, 5], dtype=float)
+t, y = rk(0, 70, y0, 0.01, lotka_volterra, table)
 
 plt.subplot(1, 2, 1)
 plt.plot(t, y[0, :], "r", label="Preys")
