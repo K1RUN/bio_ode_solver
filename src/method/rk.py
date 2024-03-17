@@ -1,6 +1,6 @@
-from typing import Callable
-import numpy as np
 import math
+import numpy as np
+from typing import Callable
 
 
 def get_k_coefficients(t: float, y: np.ndarray, h: float, f: Callable[[..., ...], np.ndarray], tableau: dict) \
