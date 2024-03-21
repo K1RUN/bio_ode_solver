@@ -12,7 +12,7 @@ y0 = np.array([20, 5], dtype=float)
 
 step = 1
 methods = ['rk_midpoint', 'rk2', 'rk4', 'rk5', 'dp8']
-
+colors = ['green', 'blue', 'red', 'black', 'yellow']
 points = {method: {} for method in methods}
 
 while step >= 0.001:
@@ -31,15 +31,17 @@ while step >= 0.001:
         
     step /= 2
 
-method = 'rk2'
-plt.figure(figsize=(12, 8))
-for step, data in points[method].items():
-    t_points = data['t']
-    y_points = data['y']
-    plt.plot(t_points, y_points[0], label=f'{method}, step={step}')
-    plt.plot(t_points, y_points[1], label=f'{method}, step={step}')
+fig, axs = plt.subplots(2, 3, figsize=(240, 15))
 
-plt.title('Comparison of Different Integration Methods')
-# plt.legend()
+for i, method in enumerate(methods):
+    for step, data in points[method].items():
+        t_points = data['t']
+        y_points = data['y']
+        axs[i // 3][i % 3].plot(t_points, y_points[0], label=f'{method}, step={step}', color=colors[i])
+        axs[i // 3][i % 3].plot(t_points, y_points[1], label=f'{method}, step={step}', color=colors[i])
+        axs[i // 3][i % 3].set(xlabel="Time (t)", ylabel="Population (N)")
+        axs[i // 3][i % 3].grid(True)
+        axs[i // 3][i % 3].set_title(f'{method}')
+
 plt.grid(True)
 plt.show()
