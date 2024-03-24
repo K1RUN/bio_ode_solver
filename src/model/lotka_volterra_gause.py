@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from method.rk import rk
-from utils.parse_tableau import parse_butcher_tableau
+from bio_ode_solver.src.method.rk import rk
+from bio_ode_solver.src.utils.parse_tableau import input_butcher_tableau
 
 
 def lotka_volterra_gause(_, N):
@@ -18,12 +18,14 @@ def lotka_volterra_gause(_, N):
     alpha = 1
     beta = 0.5
 
-    xdot = np.array([b1 * N[0] * (1 - (N[0] + alpha * N[1]) / K1), b2 * N[1] * (1 - (N[1] + beta * N[0]) / K2)])
+    xdot = np.array([b1 * N[0] * (1 - (N[0] + alpha * N[1]) / K1),
+                     b2 * N[1] * (1 - (N[1] + beta * N[0]) / K2)])
 
     return xdot
 
+
 if __name__ == "__main__":
-    table = parse_butcher_tableau()
+    table = input_butcher_tableau()
 
     # SOLUTION
     y0 = np.array([20, 5], dtype=float)

@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from bio_ode_solver.src.method.rk import rk
-from bio_ode_solver.src.utils.parse_tableau import parse_butcher_tableau
+from bio_ode_solver.src.utils.parse_tableau import input_butcher_tableau
 
 
 def lotka_volterra(_, N):
@@ -16,23 +16,24 @@ def lotka_volterra(_, N):
     return xdot
 
 
-table = parse_butcher_tableau()
+if __name__ == "__main__":
+    table = input_butcher_tableau()
 
-# SOLUTION
-y0 = np.array([20, 5], dtype=float)
-t, y = rk(0, 70, y0, 0.01, lotka_volterra, table)
+    # SOLUTION
+    y0 = np.array([20, 5], dtype=float)
+    t, y = rk(0, 70, y0, 0.01, lotka_volterra, table)
 
-plt.subplot(1, 2, 1)
-plt.plot(t, y[0, :], "r", label="Preys")
-plt.plot(t, y[1, :], "b", label="Predators")
-plt.xlabel("Time (t)")
-plt.grid()
-plt.legend()
+    plt.subplot(1, 2, 1)
+    plt.plot(t, y[0, :], "r", label="Preys")
+    plt.plot(t, y[1, :], "b", label="Predators")
+    plt.xlabel("Time (t)")
+    plt.grid()
+    plt.legend()
 
-plt.subplot(1, 2, 2)
-plt.plot(y[0, :], y[1, :])
-plt.xlabel("Preys")
-plt.ylabel("Predators")
-plt.grid()
+    plt.subplot(1, 2, 2)
+    plt.plot(y[0, :], y[1, :])
+    plt.xlabel("Preys")
+    plt.ylabel("Predators")
+    plt.grid()
 
-plt.show()
+    plt.show()

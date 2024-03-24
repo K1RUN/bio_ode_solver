@@ -1,14 +1,22 @@
 import fractions as fr
 
 
-def parse_butcher_tableau() -> dict:
+def input_butcher_tableau() -> dict:
     """
     NEED TO SPECIFY BUTCHER TABLE FILE IN STDIN (default path is butcher_tables/...)
     :return: dict of lists with floats
     """
     path = 'butcher_tables/'
     filename = input()
-    with open(path + filename) as file:
+    return parse_butcher_tableau(path + filename)
+
+
+def parse_butcher_tableau(path: str) -> dict:
+    """
+    NEED TO SPECIFY BUTCHER TABLE FILE IN PATH
+    :return: dict of lists with floats
+    """
+    with open(path) as file:
         info = file.read().splitlines()
 
     def is_valid_number(s: str):

@@ -3,7 +3,7 @@ import io
 
 import numpy as np
 from bio_ode_solver.src.method.rk import rk
-from bio_ode_solver.src.utils.parse_tableau import parse_butcher_tableau 
+from bio_ode_solver.src.utils.parse_tableau import input_butcher_tableau
 from bio_ode_solver.src.model.lotka_volterra_gause import lotka_volterra_gause
 
 from sklearn.metrics import mean_squared_error
@@ -14,7 +14,7 @@ input_string = "dp8"
 original_stdin = sys.stdin
 try:
     sys.stdin = io.StringIO(input_string)
-    table = parse_butcher_tableau()
+    table = input_butcher_tableau() # elshadick TODO: parse_butcher_tableau(path: str)
 finally:
     sys.stdin = original_stdin
 
@@ -32,7 +32,7 @@ for step in steps:
         original_stdin = sys.stdin
         try:
             sys.stdin = io.StringIO(input_string)
-            table = parse_butcher_tableau()
+            table = input_butcher_tableau() # elshadick TODO: parse_butcher_tableau(path: str)
         finally:
             sys.stdin = original_stdin
 

@@ -3,7 +3,7 @@ import io
 
 import numpy as np
 from bio_ode_solver.src.method.rk import rk
-from bio_ode_solver.src.utils.parse_tableau import parse_butcher_tableau
+from bio_ode_solver.src.utils.parse_tableau import input_butcher_tableau
 from bio_ode_solver.src.model.lotka_volterra_gause import lotka_volterra_gause
 
 import matplotlib.pyplot as plt
@@ -21,7 +21,7 @@ while step >= 0.001:
         original_stdin = sys.stdin
         try:
             sys.stdin = io.StringIO(input_string)
-            table = parse_butcher_tableau()
+            table = input_butcher_tableau() # elshadick TODO: parse_butcher_tableau(path: str)
         finally:
             sys.stdin = original_stdin
 
@@ -31,7 +31,7 @@ while step >= 0.001:
         
     step /= 2
 
-fig, axs = plt.subplots(2, 3, figsize=(240, 15))
+fig, axs = plt.subplots(2, 3)
 
 for i, method in enumerate(methods):
     for step, data in points[method].items():
