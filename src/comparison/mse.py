@@ -6,7 +6,6 @@ from bio_ode_solver.src.method.rk import rk
 from bio_ode_solver.src.utils.parse_tableau import parse_butcher_tableau
 from bio_ode_solver.src.model.lotka_volterra_gause import lotka_volterra_gause
 
-
 steps = [0.1, 0.01, 0.001]
 prefix = '../../butcher_tables/'
 methods = ['rk2_ralston', 'rk_midpoint', 'rk2', 'rk4', 'rk5']
