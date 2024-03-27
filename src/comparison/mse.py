@@ -9,7 +9,7 @@ from bio_ode_solver.src.model.lotka_volterra_gause import lotka_volterra_gause
 
 steps = [0.1, 0.01, 0.001]
 prefix = '../../butcher_tables/'
-methods = ['rk_midpoint', 'rk2', 'rk4', 'rk5']
+methods = ['rk2_ralston', 'rk_midpoint', 'rk2', 'rk4', 'rk5']
 
 mse_values = {method: [] for method in methods}
 

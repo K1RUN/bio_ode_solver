@@ -10,8 +10,8 @@ y0 = np.array([20, 5], dtype=float)
 
 step = 1
 prefix = '../../butcher_tables/'
-methods = ['rk_midpoint', 'rk2', 'rk4', 'rk5', 'dp8']
-colors = ['green', 'blue', 'red', 'black', 'yellow']
+methods = ['rk2_ralston', 'rk_midpoint', 'rk2', 'rk4', 'rk5', 'dp8']
+colors = ['cyan', 'green', 'blue', 'red', 'black', 'yellow']
 points = {method: {} for method in methods}
 
 while step >= 0.001:

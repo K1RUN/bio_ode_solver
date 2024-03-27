@@ -26,17 +26,23 @@ def parse_butcher_tableau(path: str) -> dict:
 
     table = {}
 
+    table_size = len(info[0].split()) - 1
+
     for i, line in enumerate(info):
         """LAST LINE IN INFO STANDS FOR b COEFFICIENTS, b COEFFICIENTS WILL BE ADDED SEPARATELY AFTER THE CYCLE"""
         """https://en.wikipedia.org/wiki/List_of_Runge%E2%80%93Kutta_methods#Implicit_Runge%E2%80%93Kutta_methods"""
         row = line.split()
         if all(is_valid_number(string) for string in row):
             row = [float(fr.Fraction(number)) for number in row]
-            if i != len(info) - 1:
+
+            if i < table_size:
                 table.setdefault('c_', []).append(row[0])
                 table.setdefault('a_', []).append(row[1:])
 
-            elif i == len(info) - 1:
+            elif i == table_size:
                 table.setdefault('b_', []).extend(row)
+
+            elif i == table_size + 1:
+                table.setdefault('b_star', []).extend(row)
 
     return table
