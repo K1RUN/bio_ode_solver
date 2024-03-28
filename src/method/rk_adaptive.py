@@ -30,29 +30,14 @@ def rk_one_step_adaptive(t: float, y: np.ndarray, y_star: np.ndarray, h: float, 
     b_ = tableau['b_']
     b_star = tableau['b_star']
 
-    local_error = h * np.sum([(b_[i] - tableau['b_star'][i]) * k[i] for i in range(len(b_))])
-    toli = Atoli + np.max(np.abs(y_n), np.abs(y_n_star)) * Rtoli
-
-    if local_error > toli:
-        h_new = h * 0.1
-    elif local_error < toli * 0.01:
-        h_new = h * 2
-    # h_opt
-    # err = np.sqrt((1 / len()) * np.sum(local_error / toli) ** 2)
-    #
-    # err = h * np.sum([(b_[i] - tableau['b_star'][i]) * k[i] for i in range(len(b_))])
-    # err_rel = np.sqrt((err_abs / Atoli) ** 2, (err_abs / Rtoli) ** 2)
-    #
-    # err_rel = np.sqrt(np.sum([(err_abs / Atoli) ** 2, (err_abs / Rtoli) ** 2]))
-
-    # h_new = h * (1.0 / err_rel) ** (1.0 / (len(b_) + 1))
-    # if h_new < 0.1 * h:
-    #     h_new = 0.1 * h
-    # elif h_new > 2 * h:
-    #     h_new = 2 * h
-
     for i in range(len(b_)):
         y_n += h * b_[i] * k[i]
         y_n_star += h * b_star[i] * k[i]
     t_n = t + h
+
+    local_error = h * np.sum([(b_[i] - tableau['b_star'][i]) * k[i] for i in range(len(b_))])
+    tol = Atoli + np.maximum(np.abs(y_n), np.fabs(y_n_star)) * Rtoli
+    err = np.sqrt((1 / len(y_n)) * np.sum((local_error / tol) ** 2))
+    h_new = h * ((1.0 / err) ** (1.0 / (len(b_) + 1)))
+
     return t_n, y_n, y_n_star, h_new
