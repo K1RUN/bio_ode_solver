@@ -32,6 +32,11 @@ def parse_butcher_tableau(path: str) -> dict:
         """LAST LINE IN INFO STANDS FOR b COEFFICIENTS, b COEFFICIENTS WILL BE ADDED SEPARATELY AFTER THE CYCLE"""
         """https://en.wikipedia.org/wiki/List_of_Runge%E2%80%93Kutta_methods#Implicit_Runge%E2%80%93Kutta_methods"""
         row = line.split()
+
+        if "rank" in row:
+            ranks = row[1:]
+            table.setdefault('rank', []).extend(list(map(int, ranks)))
+
         if all(is_valid_number(string) for string in row):
             row = [float(fr.Fraction(number)) for number in row]
 
