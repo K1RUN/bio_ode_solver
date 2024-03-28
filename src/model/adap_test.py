@@ -10,7 +10,9 @@ if __name__ == "__main__":
 
     # SOLUTION
     y0 = np.array([20, 5], dtype=float)
-    t, y = rk_adaptive(0, 70, y0, 0.01, lotka_volterra_gause, table, Atoli=1e-5, Rtoli=1e-5)
+
+    t = np.arange(0, 70, 0.01)
+    _, y = rk_adaptive(0, 70, y0, 0.01, lotka_volterra_gause, table, Atoli=1e-5, Rtoli=1e-5)
 
     fig, axs = plt.subplots(1, 2, figsize=(9, 5))
 
