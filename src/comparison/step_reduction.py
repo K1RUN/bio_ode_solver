@@ -8,7 +8,7 @@ from bio_ode_solver.src.model.lotka_volterra_gause import lotka_volterra_gause
 y0 = np.array([20, 5], dtype=float)
 
 step = 1
-prefix = '../../butcher_tables/'
+prefix = 'butcher_tables/'
 methods = ['rk2_ralston', 'rk_midpoint', 'rk2', 'rk4', 'rk5', 'dp8']
 colors = ['cyan', 'green', 'blue', 'red', 'black', 'yellow']
 points = {method: {} for method in methods}
@@ -18,7 +18,6 @@ while step >= 0.001:
         table = parse_butcher_tableau(prefix + method)
         t_method, y_method = rk(0, 70, y0, step, lotka_volterra_gause, table)
         points[method][step] = {'t': t_method, 'y': y_method}
-
     step /= 2
 
 fig, axs = plt.subplots(2, 3)

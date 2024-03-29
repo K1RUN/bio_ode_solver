@@ -3,25 +3,25 @@ from sklearn.metrics import mean_squared_error
 import matplotlib.pyplot as plt
 
 from bio_ode_solver.src.method.rk import rk
+from bio_ode_solver.src.method.rk_adaptive import rk_adaptive
 from bio_ode_solver.src.utils.parse_tableau import parse_butcher_tableau
 from bio_ode_solver.src.model.lotka_volterra_gause import lotka_volterra_gause
 
-steps = [0.1, 0.01, 0.001]
-prefix = '../../butcher_tables/'
-methods = ['rk2_ralston', 'rk_midpoint', 'rk2', 'rk4', 'rk5']
+steps = [0.001 * 2 ** (n - 1) for n in range(1, 11)]
+prefix = 'butcher_tables/'
+methods = ['rk_midpoint', 'rk2', 'rk2_ralston', 'rk4', 'rk5', 'dp8']
 
 mse_values = {method: [] for method in methods}
 
 y0 = np.array([20, 5], dtype=float)
-dp8_table = parse_butcher_tableau(prefix + 'dp8')
+adap_std = parse_butcher_tableau(prefix + 'dp')
 
 for step in steps:
-    t_dp8, y_dp8 = rk(0, 70, y0, step, lotka_volterra_gause, dp8_table)
+    t_dp, y_dp = rk_adaptive(0, 70, y0, step, lotka_volterra_gause, adap_std, Atoli=1e-6, Rtoli=1e-6)
     for method in methods:
         table = parse_butcher_tableau(prefix + method)
         t_method, y_method = rk(0, 70, y0, step, lotka_volterra_gause, table)
-        mse = mean_squared_error(y_dp8.T, y_method.T)
-        # print(f"MSE for {method}: {mse} with step:{step}")
+        mse = mean_squared_error(y_dp.T, y_method.T)
         mse_values[method].append(mse)
 
 plt.figure(figsize=(10, 6))
